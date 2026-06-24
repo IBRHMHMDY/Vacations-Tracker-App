@@ -17,17 +17,14 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _jobController = TextEditingController();
+  final _jobController = TextEditingController(text: 'موظف');
   final _regularLeavesController = TextEditingController(text: '21');
   final _casualLeavesController = TextEditingController(text: '7');
 
   @override
   void initState() {
     super.initState();
-    // تمت إزالة محاولة القراءة من هنا لأننا سنعتمد على المستمع (Listener) أدناه
   }
-
-
 
   void _saveSettings() {
     if (_formKey.currentState!.validate()) {
@@ -147,7 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         controller: _casualLeavesController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
-                          labelText: 'إجمالي العارض',
+                          labelText: 'إجمالي العارضه',
                           border: OutlineInputBorder(),
                         ),
                         validator: _numberValidator,
