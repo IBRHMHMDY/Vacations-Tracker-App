@@ -4,7 +4,7 @@ import '../../core/errors/exceptions.dart';
 import '../../core/errors/failures.dart';
 import '../../domain/entities/settings.dart';
 import '../../domain/repositories/settings_repository.dart';
-import '../database/app_database.dart';
+import '../../core/database/app_database.dart';
 import '../datasources/local_data_source.dart';
 import '../models/mappers.dart';
 

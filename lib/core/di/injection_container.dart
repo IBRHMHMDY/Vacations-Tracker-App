@@ -1,17 +1,18 @@
 import 'package:get_it/get_it.dart';
 import 'package:vacation_tracker/data/repositories/leave_repository_impl.dart';
 import 'package:vacation_tracker/data/repositories/settings_repository_impl.dart';
-import 'data/database/app_database.dart';
-import 'data/datasources/local_data_source.dart';
+import 'package:vacation_tracker/domain/usecases/reset_leaves_usecase.dart';
+import '../database/app_database.dart';
+import '../../data/datasources/local_data_source.dart';
 
-import 'domain/repositories/leave_repository.dart';
-import 'domain/repositories/settings_repository.dart';
-import 'domain/usecases/add_leave_usecase.dart';
-import 'domain/usecases/calculate_balances_usecase.dart';
-import 'domain/usecases/get_current_year_leaves_usecase.dart';
-import 'domain/usecases/settings_usecases.dart';
-import 'presentation/blocs/leaves/leaves_bloc.dart';
-import 'presentation/blocs/settings/settings_bloc.dart';
+import '../../domain/repositories/leave_repository.dart';
+import '../../domain/repositories/settings_repository.dart';
+import '../../domain/usecases/add_leave_usecase.dart';
+import '../../domain/usecases/calculate_balances_usecase.dart';
+import '../../domain/usecases/get_current_year_leaves_usecase.dart';
+import '../../domain/usecases/settings_usecases.dart';
+import '../../presentation/blocs/leaves/leaves_bloc.dart';
+import '../../presentation/blocs/settings/settings_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -26,6 +27,7 @@ Future<void> init() async {
         calculateBalances: sl(),
         getCurrentYearLeaves: sl(),
         addLeave: sl(),
+        resetLeaves: sl(), // أضف هذا السطر
       ));
 
   // --- Use Cases ---
@@ -38,6 +40,7 @@ Future<void> init() async {
         getSettingsUseCase: sl(),
         getCurrentYearLeavesUseCase: sl(),
       ));
+  sl.registerLazySingleton(() => ResetLeavesUseCase(sl()));
 
   // --- Repositories ---
   sl.registerLazySingleton<SettingsRepository>(() => SettingsRepositoryImpl(sl()));

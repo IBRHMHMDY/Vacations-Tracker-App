@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/rendering.dart';
-import '../database/app_database.dart';
+import '../../core/database/app_database.dart';
 import '../../core/errors/exceptions.dart';
 
 abstract class LocalDataSource {
@@ -9,6 +9,7 @@ abstract class LocalDataSource {
   Future<void> saveSettings(SettingsTableCompanion companion);
   Future<void> addLeaveRecord(LeaveRecordsTableCompanion companion);
   Future<List<LeaveRecordModel>> getLeavesBetween(DateTime start, DateTime end);
+  Future<void> deleteAllLeaves();
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -70,6 +71,15 @@ class LocalDataSourceImpl implements LocalDataSource {
           .get();
     } catch (e) {
       throw DatabaseException('فشل في جلب سجلات الإجازات');
+    }
+  }
+
+  @override
+  Future<void> deleteAllLeaves() async {
+    try {
+      await db.delete(db.leaveRecordsTable).go();
+    } catch (e) {
+      throw DatabaseException('فشل في مسح سجلات الإجازات');
     }
   }
 }

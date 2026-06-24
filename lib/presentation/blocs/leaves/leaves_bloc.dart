@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:vacation_tracker/domain/usecases/reset_leaves_usecase.dart';
 import '../../../domain/entities/leave_balance.dart';
 import '../../../domain/entities/leave_record.dart';
 import '../../../domain/usecases/add_leave_usecase.dart';
@@ -20,6 +21,7 @@ class AddNewLeaveEvent extends LeavesEvent {
   @override
   List<Object> get props => [leave];
 }
+class ResetAllLeavesEvent extends LeavesEvent {}
 
 // --- States ---
 abstract class LeavesState extends Equatable {
@@ -45,17 +47,20 @@ class LeavesError extends LeavesState {
   @override
   List<Object> get props => [message];
 }
+class LeavesResetSuccess extends LeavesState {}
 
 // --- BLoC ---
 class LeavesBloc extends Bloc<LeavesEvent, LeavesState> {
   final CalculateBalancesUseCase calculateBalances;
   final GetCurrentYearLeavesUseCase getCurrentYearLeaves;
   final AddLeaveUseCase addLeave;
+  final ResetLeavesUseCase resetLeaves;
 
   LeavesBloc({
     required this.calculateBalances,
     required this.getCurrentYearLeaves,
     required this.addLeave,
+    required this.resetLeaves,
   }) : super(LeavesInitial()) {
 
     on<LoadBalancesAndLeavesEvent>((event, emit) async {
@@ -90,5 +95,21 @@ class LeavesBloc extends Bloc<LeavesEvent, LeavesState> {
         },
       );
     });
+
+    on<ResetAllLeavesEvent>((event, emit) async {
+      emit(LeavesLoading());
+      final result = await resetLeaves(const NoParams());
+      
+      result.fold(
+        (failure) => emit(LeavesError(failure.message)),
+        (_) {
+          emit(LeavesResetSuccess());
+          // إعادة تحميل البيانات بعد التصفير
+          add(LoadBalancesAndLeavesEvent());
+        },
+      );
+    });
   }
+
+
 }

@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart'; // إضافة
 import 'package:vacation_tracker/presentation/screens/main_navigation_screen.dart';
 import 'package:vacation_tracker/presentation/screens/settings_screen.dart';
 
-import 'injection_container.dart' as di;
+import 'core/di/injection_container.dart' as di;
 import 'presentation/blocs/settings/settings_bloc.dart';
 import 'presentation/blocs/leaves/leaves_bloc.dart';
 

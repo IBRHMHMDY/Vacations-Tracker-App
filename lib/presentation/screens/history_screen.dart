@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vacation_tracker/core/utils/date_extension.dart';
 import '../../domain/entities/leave_type.dart';
 import '../../core/constants/app_colors.dart';
 import '../blocs/leaves/leaves_bloc.dart';
@@ -24,7 +25,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: ['الكل', 'اعتيادي', 'عارض'].map((filter) {
+              children: ['الكل', 'اعتيادي', 'عارضه'].map((filter) {
                 return ChoiceChip(
                   label: Text(filter),
                   selected: _selectedFilter == filter,
@@ -67,7 +68,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 4),
-                              Text('من: ${leave.startDate.toString().split(' ')[0]} - إلى: ${leave.endDate.toString().split(' ')[0]}'),
+                              Text('من: ${leave.startDate.toFormattedDate()} - إلى: ${leave.endDate.toFormattedDate()}'),
                               if (leave.notes != null && leave.notes!.isNotEmpty)
                                 Text('ملاحظات: ${leave.notes}', style: const TextStyle(fontStyle: FontStyle.italic)),
                             ],

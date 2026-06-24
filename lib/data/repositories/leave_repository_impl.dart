@@ -5,7 +5,7 @@ import '../../core/errors/failures.dart';
 import '../../domain/entities/leave_record.dart';
 import '../../domain/entities/leave_type.dart';
 import '../../domain/repositories/leave_repository.dart';
-import '../database/app_database.dart';
+import '../../core/database/app_database.dart';
 import '../datasources/local_data_source.dart';
 import '../models/mappers.dart';
 
@@ -38,6 +38,16 @@ class LeaveRepositoryImpl implements LeaveRepository {
       final models = await localDataSource.getLeavesBetween(start, end);
       final domainRecords = models.map((model) => model.toDomain()).toList();
       return Right(domainRecords);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deleteAllLeaves() async {
+    try {
+      await localDataSource.deleteAllLeaves();
+      return const Right(unit);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));
     }

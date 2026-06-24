@@ -1,7 +1,7 @@
 import '../../domain/entities/leave_record.dart';
 import '../../domain/entities/leave_type.dart';
 import '../../domain/entities/settings.dart';
-import '../database/app_database.dart';
+import '../../core/database/app_database.dart';
 
 extension SettingsMapper on SettingModel {
   Settings toDomain() {
