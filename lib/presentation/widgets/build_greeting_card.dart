@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vacation_tracker/presentation/blocs/settings/settings_bloc.dart';
 
 class BuildGreetingCard extends StatelessWidget {
-  const BuildGreetingCard(BuildContext context, {super.key});
+  const BuildGreetingCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class BuildGreetingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'مرحباً، ${state.settings.employeeName} 👋',
+                'مرحباً، ${state.settings.employeeName}',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

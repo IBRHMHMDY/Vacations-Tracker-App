@@ -64,11 +64,11 @@ class HomeScreen extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(16.0),
             children: [
-              BuildGreetingCard(context),
+              BuildGreetingCard(key: key),
               const SizedBox(height: 16),
               BuildFinancialYearCard(context),
               const SizedBox(height: 16),
-              BuildSmartAlerts(context),
+              BuildSmartAlerts(key: key,),
               const SizedBox(height: 16),
               BuildBalancesSection(context),
               const SizedBox(height: 24),

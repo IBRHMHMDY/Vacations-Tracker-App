@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vacation_tracker/presentation/blocs/leaves/leaves_bloc.dart';
+import 'package:vacation_tracker/presentation/widgets/custom_alert_banner.dart';
 
 class BuildSmartAlerts extends StatelessWidget {
-  const BuildSmartAlerts(BuildContext context,{super.key});
+  const BuildSmartAlerts({super.key}); // تم تصحيح الـ Constructor
 
   @override
   Widget build(BuildContext context) {
@@ -13,66 +14,37 @@ class BuildSmartAlerts extends StatelessWidget {
           List<Widget> alerts = [];
           final currentMonth = DateTime.now().month;
 
+          // إضافة تنبيه معلوماتي (Info)
           if (currentMonth == 6) {
             alerts.add(
-              _alertBanner(
-                context,
-                'تنبيه: اقترب موعد نهاية السنة المالية، يرجى تسوية رصيد إجازاتك.',
+              const CustomAlertBanner( 
+                message: 'تنبيه: اقترب موعد نهاية السنة المالية، يرجى تسوية رصيد إجازاتك.',
+                type: AlertType.info,
               ),
             );
           }
 
+          // إضافة تحذير / خطأ (Error)
           if (state.balance.remainingRegular <= 3) {
             alerts.add(
-              _alertBanner(
-                context,
-                'تحذير: رصيد إجازاتك الاعتيادية منخفض جداً.',
-                isWarning: true,
+              const CustomAlertBanner(
+                message: 'تحذير: متبقى من رصيد اجازاتك الاعتياديه 3 ايام فقط.',
+                type: AlertType.error,
               ),
             );
           }
-
+          if (state.balance.remainingCasual <= 3) {
+            alerts.add(
+              const CustomAlertBanner(
+                message: 'تحذير: متبقى من رصيد اجازاتك العارضه 3 ايام فقط.',
+                type: AlertType.error,
+              ),
+            );
+          }
           return Column(children: alerts);
         }
         return const SizedBox.shrink();
       },
-    );
-  }
-
-  Widget _alertBanner(
-    BuildContext context,
-    String message, {
-    bool isWarning = false,
-  }) {
-    // FIX: Changed withAlpha(1) to withAlpha(25) for proper visibility.
-    final Color baseColor = isWarning ? Colors.red : Colors.orange;
-    
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: baseColor.withAlpha(25), 
-        border: Border.all(color: baseColor, width: 1.5), // Added slight width for better UI
-        borderRadius: BorderRadius.circular(12), // Smoother borders
-      ),
-      child: Row(
-        children: [
-          Icon(
-            isWarning ? Icons.warning_amber_rounded : Icons.info_outline, // Improved semantics
-            color: baseColor,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              message,
-              style: TextStyle(
-                color: isWarning ? Colors.red.shade900 : Colors.orange.shade900, // Better text readability
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
