@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vacation_tracker/core/utils/string_extension.dart';
 import 'package:vacation_tracker/presentation/blocs/leaves/leaves_bloc.dart';
+import 'package:vacation_tracker/presentation/widgets/custom_text_field.dart';
 import '../../domain/entities/settings.dart';
 import '../blocs/settings/settings_bloc.dart';
 import 'main_navigation_screen.dart';
@@ -42,7 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   String? _numberValidator(String? value) {
     if (value == null || value.trim().isEmpty) return 'مطلوب';
-   if (value.toIntSafely() == 0 && value.trim() != '0' && value.trim() != '٠') {
+    if (value.toIntSafely() == 0 && value.trim() != '0' && value.trim() != '٠') {
       return 'أرقام فقط';
     }
     return null;
@@ -100,53 +101,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                CustomTextField(
+                  label: 'اسم الموظف',
+                  icon: Icons.person_outline,
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'اسم الموظف',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (val) =>
-                      val == null || val.trim().isEmpty ? 'مطلوب' : null,
+                  validator: (val) => val == null || val.trim().isEmpty ? 'مطلوب' : null,
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
+                
+                CustomTextField(
+                  label: 'المسمى الوظيفي',
+                  icon: Icons.work_outline,
                   controller: _jobController,
-                  decoration: const InputDecoration(
-                    labelText: 'المسمى الوظيفي',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (val) =>
-                      val == null || val.trim().isEmpty ? 'مطلوب' : null,
+                  validator: (val) => val == null || val.trim().isEmpty ? 'مطلوب' : null,
                 ),
-                const SizedBox(height: 32),
+
+                const SizedBox(height: 16),
                 const Text(
                   'الأرصدة السنوية المستحقة',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
+                
                 Row(
                   children: [
                     Expanded(
-                      child: TextFormField(
+                      child: CustomTextField(
+                        label: 'إجمالي الاعتيادي',
+                        icon: Icons.event_available,
                         controller: _regularLeavesController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'إجمالي الاعتيادي',
-                          border: OutlineInputBorder(),
-                        ),
                         validator: _numberValidator,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: TextFormField(
+                      child: CustomTextField(
+                        label: 'إجمالي العارضة',
+                        icon: Icons.event_busy,
                         controller: _casualLeavesController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'إجمالي العارضه',
-                          border: OutlineInputBorder(),
-                        ),
                         validator: _numberValidator,
                       ),
                     ),
