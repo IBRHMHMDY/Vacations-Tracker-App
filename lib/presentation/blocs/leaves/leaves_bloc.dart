@@ -83,14 +83,32 @@ class LeavesBloc extends Bloc<LeavesEvent, LeavesState> {
     });
 
     on<AddNewLeaveEvent>((event, emit) async {
-      emit(LeavesLoading());
+      // 1. الاحتفاظ بحالة وبيانات الشاشة الحالية قبل محاولة الحفظ
+      LeaveBalance? currentBalance;
+      List<LeaveRecord>? currentLeaves;
+      
+      if (state is LeavesLoaded) {
+        currentBalance = (state as LeavesLoaded).balance;
+        currentLeaves = (state as LeavesLoaded).currentYearLeaves;
+      }
+
+      emit(LeavesLoading()); // لتشغيل مؤشر التحميل داخل الزر
       final result = await addLeave(event.leave);
       
       result.fold(
-        (failure) => emit(LeavesError(failure.message)),
+        (failure) {
+          // 2. إطلاق حالة الخطأ (لكي تلتقطها الواجهة وتظهر SnackBar وتغلق النافذة)
+          emit(LeavesError(failure.message));
+          
+          // 3. استعادة حالة الشاشة السابقة فوراً لإخفاء الـ Circular Progress
+          if (currentBalance != null && currentLeaves != null) {
+            emit(LeavesLoaded(balance: currentBalance, currentYearLeaves: currentLeaves));
+          } else {
+            add(LoadBalancesAndLeavesEvent());
+          }
+        },
         (_) {
           emit(LeaveAddedSuccess());
-          // إعادة تحميل البيانات تلقائياً بعد إضافة إجازة لتحديث الأرصدة والشاشة
           add(LoadBalancesAndLeavesEvent());
         },
       );

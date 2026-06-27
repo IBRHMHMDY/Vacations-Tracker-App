@@ -5,7 +5,7 @@ import 'package:vacation_tracker/presentation/blocs/leaves/leaves_bloc.dart';
 import 'package:vacation_tracker/presentation/blocs/settings/settings_bloc.dart';
 
 class BuildBalancesSection extends StatelessWidget {
-  const BuildBalancesSection(BuildContext context,{super.key});
+  const BuildBalancesSection(BuildContext context, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class BuildBalancesSection extends StatelessWidget {
                   Expanded(
                     child: _buildCircularIndicator(
                       context,
-                      'عارضه',
+                      'عارضة',
                       leavesState.balance.remainingCasual,
                       settingsState.settings.totalCasualLeaves,
                       AppColors.casualLeaveColor,
@@ -45,9 +45,8 @@ class BuildBalancesSection extends StatelessWidget {
       },
     );
   }
-}
 
-Widget _buildCircularIndicator(
+  Widget _buildCircularIndicator(
     BuildContext context,
     String title,
     int remaining,
@@ -57,43 +56,59 @@ Widget _buildCircularIndicator(
     double progress = total > 0 ? (remaining / total) : 0;
 
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 4, // Enhanced elevation for better depth
+      shadowColor: color.withAlpha(
+        50,
+      ), // Colored shadow matching the leave type
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ), // Smoother radius
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
         child: Column(
           children: [
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.grey.shade800,
+              ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             Stack(
               alignment: Alignment.center,
               children: [
                 SizedBox(
-                  width: 100,
-                  height: 100,
+                  width: 110, // Slightly larger
+                  height: 110,
                   child: CircularProgressIndicator(
                     value: progress,
-                    strokeWidth: 8,
-                    backgroundColor: color.withAlpha(2),
+                    strokeWidth: 10,
+                    // FIX: Changed withAlpha(2) to withAlpha(25)
+                    backgroundColor: color.withAlpha(25),
                     color: color,
+                    strokeCap: StrokeCap.round, // Modern rounded stroke
                   ),
                 ),
                 Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       '$remaining',
                       style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900,
                         color: color,
                       ),
                     ),
                     Text(
                       'من $total',
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
@@ -104,3 +119,4 @@ Widget _buildCircularIndicator(
       ),
     );
   }
+}

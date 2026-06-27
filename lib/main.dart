@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:vacation_tracker/presentation/screens/main_navigation_screen.dart';
-import 'package:vacation_tracker/presentation/screens/settings_screen.dart';
-
+import 'package:vacation_tracker/presentation/screens/splash_screen.dart';
 import 'core/di/injection_container.dart' as di;
 import 'presentation/blocs/settings/settings_bloc.dart';
 import 'presentation/blocs/leaves/leaves_bloc.dart';
@@ -22,7 +20,7 @@ class VacationsTrackerApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => di.sl<SettingsBloc>()..add(CheckSettingsEvent()),
+          create: (_) => di.sl<SettingsBloc>(),
         ),
         BlocProvider(create: (_) => di.sl<LeavesBloc>()),
       ],
@@ -57,34 +55,9 @@ class VacationsTrackerApp extends StatelessWidget {
           useMaterial3: true,
           fontFamily: 'Cairo',
         ),
-        home: const InitialRoutingScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
 }
 
-class InitialRoutingScreen extends StatelessWidget {
-  const InitialRoutingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<SettingsBloc, SettingsState>(
-      listener: (context, state) {
-        if (state is SettingsInitial) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
-          );
-        } else if (state is SettingsNotFound) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const SettingsScreen(isFirstTime: true,)),
-          );
-        }
-      },
-      builder: (context, state) {
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        );
-      },
-    );
-  }
-}

@@ -3,6 +3,7 @@ import 'package:vacation_tracker/core/errors/failures.dart';
 import 'package:vacation_tracker/core/usecases/base_usecase.dart';
 import 'package:vacation_tracker/core/utils/financial_year_calculator.dart';
 import 'package:vacation_tracker/domain/entities/leave_record.dart';
+import 'package:vacation_tracker/domain/entities/leave_type.dart';
 import 'package:vacation_tracker/domain/repositories/leave_repository.dart';
 
 
@@ -40,7 +41,9 @@ class AddLeaveUseCase implements BaseUseCase<Unit, LeaveRecord> {
           final isOverlapping = !newStart.isAfter(oldEnd) && !newEnd.isBefore(oldStart);
 
           if (isOverlapping) {
-            return const Left(ValidationFailure('عذراً، يوجد تداخل مع إجازة أخرى مسجلة مسبقاً في نفس هذه الفترة.'));
+            final leaveTypeName = existingLeave.leaveType == LeaveType.regular ? 'اعتيادية' : 'عارضة';
+            
+            return Left(ValidationFailure('يوجد إجازة "$leaveTypeName" مسجلة مسبقاً في هذه الفترة.'));
           }
         }
 

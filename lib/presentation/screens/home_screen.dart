@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vacation_tracker/core/constants/app_colors.dart';
 import 'package:vacation_tracker/core/utils/date_extension.dart';
 import 'package:vacation_tracker/core/utils/financial_year_calculator.dart';
+// import 'package:vacation_tracker/core/utils/share_util.dart';
 import 'package:vacation_tracker/domain/entities/leave_record.dart';
 import 'package:vacation_tracker/domain/entities/leave_type.dart';
 import 'package:vacation_tracker/presentation/blocs/leaves/leaves_bloc.dart';
@@ -23,6 +24,7 @@ class HomeScreen extends StatelessWidget {
       listener: (context, state) {
         // إظهار رسالة الخطأ إذا تم رفض تسجيل الإجازة
         if (state is LeavesError) {
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -44,7 +46,19 @@ class HomeScreen extends StatelessWidget {
       },
 
       child: Scaffold(
-        appBar: AppBar(title: const Text('لوحة المعلومات'), centerTitle: false),
+        appBar: AppBar(
+          title: const Text('لوحة المعلومات'),
+          centerTitle: false,
+          // actions: [
+          //   IconButton(
+          //     icon: const Icon(Icons.share_outlined),
+          //     tooltip: 'مشاركة التطبيق',
+          //     onPressed: () async {
+          //       await ShareUtil.shareApplication();
+          //     },
+          //   ),
+          // ],
+        ),
         body: RefreshIndicator(
           onRefresh: () async {
             context.read<SettingsBloc>().add(LoadSettingsEvent());

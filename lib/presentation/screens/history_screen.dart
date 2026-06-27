@@ -18,7 +18,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('سجل إجازاتي')),
+      appBar: AppBar(title: const Text('دفتر اجازاتى')),
       body: Column(
         children: [
           Padding(
@@ -47,7 +47,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   }).toList();
 
                   if (filteredLeaves.isEmpty) {
-                    return const Center(child: Text('لا توجد سجلات إجازات مطابقة.'));
+                    return const Center(child: Text('لا توجد اجازات مسجله.'));
                   }
 
                   return ListView.builder(

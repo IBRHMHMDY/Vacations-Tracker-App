@@ -17,7 +17,7 @@ class BuildSmartAlerts extends StatelessWidget {
             alerts.add(
               _alertBanner(
                 context,
-                'اقترب موعد انتهاء السنة المالية، يرجى مراجعة أرصدتك.',
+                'تنبيه: اقترب موعد نهاية السنة المالية، يرجى تسوية رصيد إجازاتك.',
               ),
             );
           }
@@ -26,7 +26,7 @@ class BuildSmartAlerts extends StatelessWidget {
             alerts.add(
               _alertBanner(
                 context,
-                'تنبيه: رصيد إجازاتك الاعتيادية قارب على النفاذ!',
+                'تحذير: رصيد إجازاتك الاعتيادية منخفض جداً.',
                 isWarning: true,
               ),
             );
@@ -38,37 +38,41 @@ class BuildSmartAlerts extends StatelessWidget {
       },
     );
   }
-}
 
-Widget _alertBanner(
+  Widget _alertBanner(
     BuildContext context,
     String message, {
     bool isWarning = false,
   }) {
+    // FIX: Changed withAlpha(1) to withAlpha(25) for proper visibility.
+    final Color baseColor = isWarning ? Colors.red : Colors.orange;
+    
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isWarning
-            ? Colors.red.withAlpha(1)
-            : Colors.orange.withAlpha(1),
-        border: Border.all(color: isWarning ? Colors.red : Colors.orange),
-        borderRadius: BorderRadius.circular(8),
+        color: baseColor.withAlpha(25), 
+        border: Border.all(color: baseColor, width: 1.5), // Added slight width for better UI
+        borderRadius: BorderRadius.circular(12), // Smoother borders
       ),
       child: Row(
         children: [
           Icon(
-            Icons.info_outline,
-            color: isWarning ? Colors.red : Colors.orange,
+            isWarning ? Icons.warning_amber_rounded : Icons.info_outline, // Improved semantics
+            color: baseColor,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 12),
           Expanded(
             child: Text(
               message,
-              style: TextStyle(color: isWarning ? Colors.red : Colors.orange),
+              style: TextStyle(
+                color: isWarning ? Colors.red.shade900 : Colors.orange.shade900, // Better text readability
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
       ),
     );
   }
+}
