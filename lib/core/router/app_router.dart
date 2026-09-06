@@ -32,7 +32,7 @@ class AppRouter {
         path: setup,
         builder: (context, state) => const Scaffold(
           appBar: SettingsHeader(),
-          body: SafeArea(child: SettingsScreen(isFirstTime: true)),
+          body: SettingsScreen(isFirstTime: true),
         ),
       ),
       GoRoute(

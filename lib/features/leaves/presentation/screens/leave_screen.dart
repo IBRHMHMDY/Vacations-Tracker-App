@@ -45,38 +45,21 @@ class _LeaveScreenState extends State<LeaveScreen> {
                 });
               },
               items: const [
-                AppFilterChipItem(
-                  value: LeaveFilter.all,
-                  label: 'الكل',
-                  icon: Icons.all_inclusive_rounded,
-                ),
-                AppFilterChipItem(
-                  value: LeaveFilter.regular,
-                  label: 'اعتيادي',
-                  icon: Icons.event_available_rounded,
-                ),
-                AppFilterChipItem(
-                  value: LeaveFilter.casual,
-                  label: 'عارضة',
-                  icon: Icons.event_busy_rounded,
-                ),
+                AppFilterChipItem(value: LeaveFilter.all, label: 'الكل', icon: Icons.all_inclusive_rounded),
+                AppFilterChipItem(value: LeaveFilter.regular, label: 'اعتيادي', icon: Icons.event_available_rounded),
+                AppFilterChipItem(value: LeaveFilter.casual, label: 'عارضة', icon: Icons.event_busy_rounded),
+                AppFilterChipItem(value: LeaveFilter.sick, label: 'مرضي', icon: Icons.local_hospital_rounded), // ✅ الفلتر الجديد
               ],
             ),
-
             Expanded(
               child: BlocBuilder<LeavesBloc, LeavesState>(
                 builder: (context, state) {
                   if (state is LeavesLoaded) {
-                    final filteredLeaves = state.currentYearLeaves.where((
-                      leave,
-                    ) {
-                      if (_selectedFilter == LeaveFilter.all) {
-                        return true;
-                      }
-                      if (_selectedFilter == LeaveFilter.regular) {
-                        return leave.leaveType == LeaveType.regular;
-                      }
-                      return leave.leaveType == LeaveType.casual;
+                    final filteredLeaves = state.currentYearLeaves.where((leave) {
+                      if (_selectedFilter == LeaveFilter.all) return true;
+                      if (_selectedFilter == LeaveFilter.regular) return leave.leaveType == LeaveType.regular;
+                      if (_selectedFilter == LeaveFilter.casual) return leave.leaveType == LeaveType.casual;
+                      return leave.leaveType == LeaveType.sick; // ✅ معالجة الفلتر الجديد
                     }).toList();
                     if (filteredLeaves.isEmpty) {
                       return const AppEmptyState(

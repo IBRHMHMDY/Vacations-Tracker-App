@@ -28,13 +28,22 @@ class LeavesBalancesSection extends StatelessWidget {
             color: context.leaveColors.regular,
           ),
         ),
-        const SizedBox(width: AppSpacing.md),
+        const SizedBox(width: AppSpacing.sm), // تقليل المسافة لتناسب 3 دوائر
         Expanded(
           child: BalanceCircularIndicator(
             title: 'عارضة',
             remaining: balance.remainingCasual,
             total: settings.totalCasualLeaves,
             color: context.leaveColors.casual,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: BalanceCircularIndicator(
+            title: 'مرضي',
+            remaining: balance.remainingSick, // ✅ تمرير رصيد المرضي المتبقي
+            total: settings.totalSickLeaves,  // ✅ تمرير إجمالي المرضي
+            color: context.leaveColors.sick,  // ✅ تمرير لون المرضي
           ),
         ),
       ],

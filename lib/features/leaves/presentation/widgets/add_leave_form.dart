@@ -58,14 +58,9 @@ class AddLeaveFormState extends State<AddLeaveForm> {
             label: 'نوع الإجازة',
             prefixIcon: Icons.calendar_today,
             items: const [
-              DropdownMenuItem(
-                value: LeaveType.regular,
-                child: Text('إجازة اعتيادية'),
-              ),
-              DropdownMenuItem(
-                value: LeaveType.casual,
-                child: Text('إجازة عارضة'),
-              ),
+              DropdownMenuItem(value: LeaveType.regular, child: Text('إجازة اعتيادية')),
+              DropdownMenuItem(value: LeaveType.casual, child: Text('إجازة عارضة')),
+              DropdownMenuItem(value: LeaveType.sick, child: Text('إجازة مرضية')), // ✅ إضافة الخيار
             ],
             onChanged: (val) {
               setState(() {

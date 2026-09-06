@@ -1,9 +1,8 @@
-// lib/shared/widgets/inputs/app_number_counter.dart
+// lib/shared/widgets/inputs/app_counter_row.dart
 import 'package:flutter/material.dart';
 import 'package:leave_manager/core/constants/app_spacing.dart';
 import 'package:leave_manager/core/utils/extenstions/theme_extension.dart';
 
-/// ويدجت عام لعداد أرقام (زيادة ونقصان) يدعم الحدود الدنيا والقصوى
 class AppCounterRow extends StatelessWidget {
   final String label;
   final int value;
@@ -19,7 +18,7 @@ class AppCounterRow extends StatelessWidget {
     required this.onChanged,
     this.min = 0,
     this.max = 45,
-    this.afterCounter
+    this.afterCounter,
   });
 
   @override
@@ -45,16 +44,12 @@ class AppCounterRow extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // زر النقصان
               IconButton(
                 icon: const Icon(Icons.remove_rounded),
-                // تعطيل الزر إذا وصلنا للحد الأدنى
                 onPressed: value > min ? () => onChanged(value - 1) : null,
                 color: context.colorScheme.error,
                 disabledColor: context.colorScheme.outlineVariant,
               ),
-
-              // عرض الرقم الحالي
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
                 child: Text(
@@ -66,11 +61,8 @@ class AppCounterRow extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // زر الزيادة
               IconButton(
                 icon: const Icon(Icons.add_rounded),
-                // تعطيل الزر إذا وصلنا للحد الأقصى
                 onPressed: value < max ? () => onChanged(value + 1) : null,
                 color: context.colorScheme.primary,
                 disabledColor: context.colorScheme.outlineVariant,
@@ -78,13 +70,15 @@ class AppCounterRow extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          afterCounter!,
-          style: context.textTheme.titleMedium?.copyWith(
-            color: context.colorScheme.onSurface,
+        if (afterCounter != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            afterCounter!,
+            style: context.textTheme.titleMedium?.copyWith(
+              color: context.colorScheme.onSurface,
+            ),
           ),
-        ),
+        ],
       ],
     );
   }

@@ -15,10 +15,19 @@ class LeaveCard extends StatelessWidget {
   final LeaveRecord leave;
   const LeaveCard({super.key, required this.leave});
 
+
   @override
   Widget build(BuildContext context) {
+    final isSick = leave.leaveType == LeaveType.sick;
     final isRegular = leave.leaveType == LeaveType.regular;
-    final color = isRegular ? context.leaveColors.regular : context.leaveColors.casual;
+    
+    final color = isSick 
+        ? context.leaveColors.sick 
+        : (isRegular ? context.leaveColors.regular : context.leaveColors.casual);
+        
+    final labelText = isSick 
+        ? 'إجازة مرضية' 
+        : (isRegular ? 'إجازة اعتيادية' : 'إجازة عارضة');
 
     return Dismissible(
       key: ValueKey(leave.id),
@@ -31,7 +40,7 @@ class LeaveCard extends StatelessWidget {
       child: _LeaveCardContent(
         leave: leave,
         color: color,
-        isRegular: isRegular,
+        labelText: labelText,
       ),
     );
   }
@@ -71,12 +80,12 @@ class _DismissibleBackground extends StatelessWidget {
 class _LeaveCardContent extends StatelessWidget {
   final LeaveRecord leave;
   final Color color;
-  final bool isRegular;
+  final String labelText;
 
   const _LeaveCardContent({
     required this.leave,
     required this.color,
-    required this.isRegular,
+    required this.labelText,
   });
 
   @override
@@ -90,13 +99,13 @@ class _LeaveCardContent extends StatelessWidget {
             child: _LeaveDetails(
               leave: leave,
               color: color,
-              isRegular: isRegular,
+              labelText: labelText,
             ),
           ),
           const SizedBox(width: AppSpacing.md),
           AppNumberBox(
             number: leave.daysCount,
-            label: 'يوم',
+            label: 'أيام',
             color: color,
           ),
         ],
@@ -108,12 +117,13 @@ class _LeaveCardContent extends StatelessWidget {
 class _LeaveDetails extends StatelessWidget {
   final LeaveRecord leave;
   final Color color;
-  final bool isRegular;
+  final String labelText;
+
 
   const _LeaveDetails({
     required this.leave,
     required this.color,
-    required this.isRegular,
+    required this.labelText,
   });
 
   @override
@@ -128,7 +138,7 @@ class _LeaveDetails extends StatelessWidget {
             borderRadius: AppRadius.xl,
           ),
           child: Text(
-            isRegular ? 'إجازة اعتيادية' : 'إجازة عارضة',
+            labelText,
             style: context.textTheme.labelMedium?.copyWith(color: color),
           ),
         ),

@@ -34,6 +34,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _jobController = TextEditingController(text: 'موظف');
   final _regularLeavesController = TextEditingController(text: '15');
   final _casualLeavesController = TextEditingController(text: '7');
+  final _sickLeavesController = TextEditingController(text: '0');
   late bool _isFirstTime;
 
   @override
@@ -58,6 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _jobController.dispose();
     _regularLeavesController.dispose();
     _casualLeavesController.dispose();
+    _sickLeavesController.dispose();
     super.dispose();
   }
 
@@ -66,6 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _jobController.text = settings.jobTitle;
     _regularLeavesController.text = settings.totalRegularLeaves.toString();
     _casualLeavesController.text = settings.totalCasualLeaves.toString();
+    _sickLeavesController.text = settings.totalSickLeaves.toString();
   }
 
   void _saveSettings() {
@@ -77,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         jobTitle: _jobController.text.trim(),
         totalRegularLeaves: _regularLeavesController.text.toIntSafely(),
         totalCasualLeaves: _casualLeavesController.text.toIntSafely(),
-        
+        totalSickLeaves: _sickLeavesController.text.toIntSafely(),
       );
       context.read<SettingsBloc>().add(SaveSettingsEvent(settings));
     }
@@ -122,6 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   jobController: _jobController,
                   regularLeavesController: _regularLeavesController,
                   casualLeavesController: _casualLeavesController,
+                  sickLeavesController: _sickLeavesController,
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 // Save Settings button
