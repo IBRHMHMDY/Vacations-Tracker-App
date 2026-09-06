@@ -35,22 +35,27 @@ class CalculateBalancesUseCase implements BaseUseCase<LeaveBalance, NoParams> {
             // 3. حساب الأيام المستهلكة ديناميكياً
             int consumedRegular = 0;
             int consumedCasual = 0;
+            int consumedSick = 0;
 
             for (var leave in leaves) {
               if (leave.leaveType == LeaveType.regular) {
                 consumedRegular += leave.daysCount;
               } else if (leave.leaveType == LeaveType.casual) {
                 consumedCasual += leave.daysCount;
+              }else if (leave.leaveType == LeaveType.sick) {
+                consumedSick += leave.daysCount; // ✅ تجميع المستهلك المرضي
               }
             }
 
             // 4. استخراج الرصيد المتبقي
             final remainingRegular = settings.totalRegularLeaves - consumedRegular;
             final remainingCasual = settings.totalCasualLeaves - consumedCasual;
+            final remainingSick = settings.totalSickLeaves - consumedSick;
 
             return Right(LeaveBalance(
               remainingRegular: remainingRegular,
               remainingCasual: remainingCasual,
+              remainingSick: remainingSick
             ));
           },
         );
