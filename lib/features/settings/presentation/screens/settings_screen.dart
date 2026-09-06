@@ -122,8 +122,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   regularLeavesController: _regularLeavesController,
                   casualLeavesController: _casualLeavesController,
                 ),
-
-                // إضافة مسافة فاصلة
                 const SizedBox(height: AppSpacing.lg),
                 // Save Settings button
                 BlocBuilder<SettingsBloc, SettingsState>(
@@ -137,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     );
                   },
                 ),
-
+                const SizedBox(height: AppSpacing.lg),
                 !widget.isFirstTime
                     ? const DangerZoneSection()
                     : const SizedBox.shrink(),

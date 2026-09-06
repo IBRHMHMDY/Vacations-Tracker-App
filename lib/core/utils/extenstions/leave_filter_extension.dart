@@ -1,4 +1,4 @@
-enum LeaveFilter { all, regular, casual }
+enum LeaveFilter { all, regular, casual, sick }
 
 extension LeaveFilterExtension on LeaveFilter {
   String get label {
@@ -9,6 +9,8 @@ extension LeaveFilterExtension on LeaveFilter {
         return 'اعتيادي';
       case LeaveFilter.casual:
         return 'عارضة';
+      case LeaveFilter.sick:
+        return 'مرضي'; // تمت إضافة الفلتر الجديد
     }
   }
 }

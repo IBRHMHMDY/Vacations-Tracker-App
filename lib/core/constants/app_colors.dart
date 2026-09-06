@@ -35,11 +35,13 @@ class AppColors {
   // --- Leave Status Colors ---
   static const Color regularLeaveLight = Color(0xFF4CAF50);
   static const Color casualLeaveLight = Color(0xFFFFA200);
+  static const Color sickLeaveLight = Color(0xFFE57373);
   static const Color restLight = Color(0xFF4F46E5);
   static const Color usedRestLight = Color(0xFF757474);
 
   static const Color regularLeaveDark = Color(0xFF81C784);
   static const Color casualLeaveDark = Color(0xFFFFB93F);
+  static const Color sickLeaveDark = Color(0xFFEF5350);
   static const Color restDark = Color(0xFFB388FF);
   static const Color usedRestDark = Color(0xFFBFBBBB);
 
@@ -47,6 +49,7 @@ class AppColors {
   static const LeaveColors lightLeaveColors = LeaveColors(
     regular: regularLeaveLight,
     casual: casualLeaveLight,
+    sick: sickLeaveLight,
     rest: restLight,
     usedRest: usedRestLight
   );
@@ -54,6 +57,7 @@ class AppColors {
   static const LeaveColors darkLeaveSColors = LeaveColors(
     regular: regularLeaveDark,
     casual: casualLeaveDark,
+    sick: sickLeaveDark,
     rest: restDark,
     usedRest: usedRestDark
   );
