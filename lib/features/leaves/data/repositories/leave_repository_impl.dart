@@ -20,7 +20,7 @@ class LeaveRepositoryImpl implements LeaveRepository {
   Future<Either<Failure, Unit>> addLeave(LeaveRecord leave) async {
     try {
       final companion = LeaveRecordsTableCompanion(
-        leaveType: Value(leave.leaveType == LeaveType.regular ? 0 : 1),
+        leaveType: Value(_getLeaveTypeValue(leave.leaveType)),
         startDate: Value(leave.startDate),
         endDate: Value(leave.endDate),
         daysCount: Value(leave.daysCount),
@@ -58,3 +58,11 @@ class LeaveRepositoryImpl implements LeaveRepository {
     }
   }
 }
+
+int _getLeaveTypeValue(LeaveType type) {
+    switch (type) {
+      case LeaveType.regular: return 0;
+      case LeaveType.casual: return 1;
+      case LeaveType.sick: return 2; // ✅ النوع الجديد
+    }
+  }

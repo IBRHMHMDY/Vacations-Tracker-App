@@ -10,6 +10,7 @@ extension SettingsMapper on SettingModel {
       jobTitle: jobTitle,
       totalRegularLeaves: totalRegularLeaves,
       totalCasualLeaves: totalCasualLeaves,
+      totalSickLeaves: totalSickLeaves,
     );
   }
 }

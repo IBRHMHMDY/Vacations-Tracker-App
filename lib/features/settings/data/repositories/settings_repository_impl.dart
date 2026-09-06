@@ -44,7 +44,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
         jobTitle: Value(settings.jobTitle),
         totalRegularLeaves: Value(settings.totalRegularLeaves),
         totalCasualLeaves: Value(settings.totalCasualLeaves),
-        
+        totalSickLeaves: Value(settings.totalSickLeaves),
       );
       
       await localDataSource.saveSettings(companion);

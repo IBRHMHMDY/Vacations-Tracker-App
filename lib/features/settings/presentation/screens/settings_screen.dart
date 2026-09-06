@@ -77,6 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         jobTitle: _jobController.text.trim(),
         totalRegularLeaves: _regularLeavesController.text.toIntSafely(),
         totalCasualLeaves: _casualLeavesController.text.toIntSafely(),
+        
       );
       context.read<SettingsBloc>().add(SaveSettingsEvent(settings));
     }

@@ -61,6 +61,18 @@ class $SettingsTableTable extends SettingsTable
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _totalSickLeavesMeta = const VerificationMeta(
+    'totalSickLeaves',
+  );
+  @override
+  late final GeneratedColumn<int> totalSickLeaves = GeneratedColumn<int>(
+    'total_sick_leaves',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -68,6 +80,7 @@ class $SettingsTableTable extends SettingsTable
     jobTitle,
     totalRegularLeaves,
     totalCasualLeaves,
+    totalSickLeaves,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -125,6 +138,15 @@ class $SettingsTableTable extends SettingsTable
     } else if (isInserting) {
       context.missing(_totalCasualLeavesMeta);
     }
+    if (data.containsKey('total_sick_leaves')) {
+      context.handle(
+        _totalSickLeavesMeta,
+        totalSickLeaves.isAcceptableOrUnknown(
+          data['total_sick_leaves']!,
+          _totalSickLeavesMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -154,6 +176,10 @@ class $SettingsTableTable extends SettingsTable
         DriftSqlType.int,
         data['${effectivePrefix}total_casual_leaves'],
       )!,
+      totalSickLeaves: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_sick_leaves'],
+      )!,
     );
   }
 
@@ -169,12 +195,14 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
   final String jobTitle;
   final int totalRegularLeaves;
   final int totalCasualLeaves;
+  final int totalSickLeaves;
   const SettingModel({
     required this.id,
     required this.employeeName,
     required this.jobTitle,
     required this.totalRegularLeaves,
     required this.totalCasualLeaves,
+    required this.totalSickLeaves,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -184,6 +212,7 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
     map['job_title'] = Variable<String>(jobTitle);
     map['total_regular_leaves'] = Variable<int>(totalRegularLeaves);
     map['total_casual_leaves'] = Variable<int>(totalCasualLeaves);
+    map['total_sick_leaves'] = Variable<int>(totalSickLeaves);
     return map;
   }
 
@@ -194,6 +223,7 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
       jobTitle: Value(jobTitle),
       totalRegularLeaves: Value(totalRegularLeaves),
       totalCasualLeaves: Value(totalCasualLeaves),
+      totalSickLeaves: Value(totalSickLeaves),
     );
   }
 
@@ -208,6 +238,7 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
       jobTitle: serializer.fromJson<String>(json['jobTitle']),
       totalRegularLeaves: serializer.fromJson<int>(json['totalRegularLeaves']),
       totalCasualLeaves: serializer.fromJson<int>(json['totalCasualLeaves']),
+      totalSickLeaves: serializer.fromJson<int>(json['totalSickLeaves']),
     );
   }
   @override
@@ -219,6 +250,7 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
       'jobTitle': serializer.toJson<String>(jobTitle),
       'totalRegularLeaves': serializer.toJson<int>(totalRegularLeaves),
       'totalCasualLeaves': serializer.toJson<int>(totalCasualLeaves),
+      'totalSickLeaves': serializer.toJson<int>(totalSickLeaves),
     };
   }
 
@@ -228,12 +260,14 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
     String? jobTitle,
     int? totalRegularLeaves,
     int? totalCasualLeaves,
+    int? totalSickLeaves,
   }) => SettingModel(
     id: id ?? this.id,
     employeeName: employeeName ?? this.employeeName,
     jobTitle: jobTitle ?? this.jobTitle,
     totalRegularLeaves: totalRegularLeaves ?? this.totalRegularLeaves,
     totalCasualLeaves: totalCasualLeaves ?? this.totalCasualLeaves,
+    totalSickLeaves: totalSickLeaves ?? this.totalSickLeaves,
   );
   SettingModel copyWithCompanion(SettingsTableCompanion data) {
     return SettingModel(
@@ -248,6 +282,9 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
       totalCasualLeaves: data.totalCasualLeaves.present
           ? data.totalCasualLeaves.value
           : this.totalCasualLeaves,
+      totalSickLeaves: data.totalSickLeaves.present
+          ? data.totalSickLeaves.value
+          : this.totalSickLeaves,
     );
   }
 
@@ -258,7 +295,8 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
           ..write('employeeName: $employeeName, ')
           ..write('jobTitle: $jobTitle, ')
           ..write('totalRegularLeaves: $totalRegularLeaves, ')
-          ..write('totalCasualLeaves: $totalCasualLeaves')
+          ..write('totalCasualLeaves: $totalCasualLeaves, ')
+          ..write('totalSickLeaves: $totalSickLeaves')
           ..write(')'))
         .toString();
   }
@@ -270,6 +308,7 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
     jobTitle,
     totalRegularLeaves,
     totalCasualLeaves,
+    totalSickLeaves,
   );
   @override
   bool operator ==(Object other) =>
@@ -279,7 +318,8 @@ class SettingModel extends DataClass implements Insertable<SettingModel> {
           other.employeeName == this.employeeName &&
           other.jobTitle == this.jobTitle &&
           other.totalRegularLeaves == this.totalRegularLeaves &&
-          other.totalCasualLeaves == this.totalCasualLeaves);
+          other.totalCasualLeaves == this.totalCasualLeaves &&
+          other.totalSickLeaves == this.totalSickLeaves);
 }
 
 class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
@@ -288,12 +328,14 @@ class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
   final Value<String> jobTitle;
   final Value<int> totalRegularLeaves;
   final Value<int> totalCasualLeaves;
+  final Value<int> totalSickLeaves;
   const SettingsTableCompanion({
     this.id = const Value.absent(),
     this.employeeName = const Value.absent(),
     this.jobTitle = const Value.absent(),
     this.totalRegularLeaves = const Value.absent(),
     this.totalCasualLeaves = const Value.absent(),
+    this.totalSickLeaves = const Value.absent(),
   });
   SettingsTableCompanion.insert({
     this.id = const Value.absent(),
@@ -301,6 +343,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
     required String jobTitle,
     required int totalRegularLeaves,
     required int totalCasualLeaves,
+    this.totalSickLeaves = const Value.absent(),
   }) : employeeName = Value(employeeName),
        jobTitle = Value(jobTitle),
        totalRegularLeaves = Value(totalRegularLeaves),
@@ -311,6 +354,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
     Expression<String>? jobTitle,
     Expression<int>? totalRegularLeaves,
     Expression<int>? totalCasualLeaves,
+    Expression<int>? totalSickLeaves,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -319,6 +363,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
       if (totalRegularLeaves != null)
         'total_regular_leaves': totalRegularLeaves,
       if (totalCasualLeaves != null) 'total_casual_leaves': totalCasualLeaves,
+      if (totalSickLeaves != null) 'total_sick_leaves': totalSickLeaves,
     });
   }
 
@@ -328,6 +373,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
     Value<String>? jobTitle,
     Value<int>? totalRegularLeaves,
     Value<int>? totalCasualLeaves,
+    Value<int>? totalSickLeaves,
   }) {
     return SettingsTableCompanion(
       id: id ?? this.id,
@@ -335,6 +381,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
       jobTitle: jobTitle ?? this.jobTitle,
       totalRegularLeaves: totalRegularLeaves ?? this.totalRegularLeaves,
       totalCasualLeaves: totalCasualLeaves ?? this.totalCasualLeaves,
+      totalSickLeaves: totalSickLeaves ?? this.totalSickLeaves,
     );
   }
 
@@ -356,6 +403,9 @@ class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
     if (totalCasualLeaves.present) {
       map['total_casual_leaves'] = Variable<int>(totalCasualLeaves.value);
     }
+    if (totalSickLeaves.present) {
+      map['total_sick_leaves'] = Variable<int>(totalSickLeaves.value);
+    }
     return map;
   }
 
@@ -366,7 +416,8 @@ class SettingsTableCompanion extends UpdateCompanion<SettingModel> {
           ..write('employeeName: $employeeName, ')
           ..write('jobTitle: $jobTitle, ')
           ..write('totalRegularLeaves: $totalRegularLeaves, ')
-          ..write('totalCasualLeaves: $totalCasualLeaves')
+          ..write('totalCasualLeaves: $totalCasualLeaves, ')
+          ..write('totalSickLeaves: $totalSickLeaves')
           ..write(')'))
         .toString();
   }
@@ -1794,6 +1845,7 @@ typedef $$SettingsTableTableCreateCompanionBuilder =
       required String jobTitle,
       required int totalRegularLeaves,
       required int totalCasualLeaves,
+      Value<int> totalSickLeaves,
     });
 typedef $$SettingsTableTableUpdateCompanionBuilder =
     SettingsTableCompanion Function({
@@ -1802,6 +1854,7 @@ typedef $$SettingsTableTableUpdateCompanionBuilder =
       Value<String> jobTitle,
       Value<int> totalRegularLeaves,
       Value<int> totalCasualLeaves,
+      Value<int> totalSickLeaves,
     });
 
 class $$SettingsTableTableFilterComposer
@@ -1835,6 +1888,11 @@ class $$SettingsTableTableFilterComposer
 
   ColumnFilters<int> get totalCasualLeaves => $composableBuilder(
     column: $table.totalCasualLeaves,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get totalSickLeaves => $composableBuilder(
+    column: $table.totalSickLeaves,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1872,6 +1930,11 @@ class $$SettingsTableTableOrderingComposer
     column: $table.totalCasualLeaves,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get totalSickLeaves => $composableBuilder(
+    column: $table.totalSickLeaves,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$SettingsTableTableAnnotationComposer
@@ -1901,6 +1964,11 @@ class $$SettingsTableTableAnnotationComposer
 
   GeneratedColumn<int> get totalCasualLeaves => $composableBuilder(
     column: $table.totalCasualLeaves,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get totalSickLeaves => $composableBuilder(
+    column: $table.totalSickLeaves,
     builder: (column) => column,
   );
 }
@@ -1941,12 +2009,14 @@ class $$SettingsTableTableTableManager
                 Value<String> jobTitle = const Value.absent(),
                 Value<int> totalRegularLeaves = const Value.absent(),
                 Value<int> totalCasualLeaves = const Value.absent(),
+                Value<int> totalSickLeaves = const Value.absent(),
               }) => SettingsTableCompanion(
                 id: id,
                 employeeName: employeeName,
                 jobTitle: jobTitle,
                 totalRegularLeaves: totalRegularLeaves,
                 totalCasualLeaves: totalCasualLeaves,
+                totalSickLeaves: totalSickLeaves,
               ),
           createCompanionCallback:
               ({
@@ -1955,12 +2025,14 @@ class $$SettingsTableTableTableManager
                 required String jobTitle,
                 required int totalRegularLeaves,
                 required int totalCasualLeaves,
+                Value<int> totalSickLeaves = const Value.absent(),
               }) => SettingsTableCompanion.insert(
                 id: id,
                 employeeName: employeeName,
                 jobTitle: jobTitle,
                 totalRegularLeaves: totalRegularLeaves,
                 totalCasualLeaves: totalCasualLeaves,
+                totalSickLeaves: totalSickLeaves,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

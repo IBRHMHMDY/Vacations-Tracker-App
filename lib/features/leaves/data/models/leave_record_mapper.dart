@@ -8,11 +8,17 @@ extension LeaveRecordMapper on LeaveRecordModel {
   LeaveRecord toDomain() {
     return LeaveRecord(
       id: id,
-      leaveType: leaveType == 0 ? LeaveType.regular : LeaveType.casual,
+      leaveType: _mapLeaveType(leaveType),
       startDate: startDate,
       endDate: endDate,
       daysCount: daysCount,
       notes: notes,
     );
+  }
+
+  LeaveType _mapLeaveType(int type) {
+    if (type == 0) return LeaveType.regular;
+    if (type == 1) return LeaveType.casual;
+    return LeaveType.sick; // ✅ النوع الجديد
   }
 }
